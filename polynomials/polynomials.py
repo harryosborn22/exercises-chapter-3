@@ -1,13 +1,18 @@
+"""Define polynomial class and functions."""
+
 from numbers import Number
 
 
 def derivative(self):
+    """Return derivative of polynomial."""
     return self.dx()
 
 
 class Polynomial:
+    """Define polynomial class."""
 
     def __init__(self, coefs):
+        """Define polynomial class parameters and remove leading zeros."""
         if isinstance(coefs, tuple) or isinstance(coefs, list):
             filled = False
             for x in coefs:
