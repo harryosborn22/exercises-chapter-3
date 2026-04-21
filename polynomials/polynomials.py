@@ -1,17 +1,19 @@
 from numbers import Number
 
+
 def derivative(self):
     return self.dx()
+
 
 class Polynomial:
 
     def __init__(self, coefs):
-        if isinstance(coefs, tuple) or isinstance (coefs,list):
+        if isinstance(coefs, tuple) or isinstance(coefs, list):
             filled = False
             for x in coefs:
                 if x != 0:
                     filled = True
-            if filled == False:
+            if not filled:
                 coefs = [0]
             if len(coefs) > 1 and filled:
                 firsttype = type(coefs)
@@ -66,7 +68,7 @@ class Polynomial:
 
         else:
             return NotImplemented
-        
+
     def __sub__(self, other):
 
         if isinstance(other, Polynomial):
@@ -79,34 +81,31 @@ class Polynomial:
             else:
                 multi = -1
                 coefs = [othercoefs, selfcoefs]
-            for i in range(0,diff, multi):
-                coefs[1].append(0)  
+            for i in range(0, diff, multi):
+                coefs[1].append(0)
             if multi == -1:
-                coefs = [coefs[1],coefs[0]]
+                coefs = [coefs[1], coefs[0]]
             newcoefs = []
             i = 0
             for x in coefs[0]:
-                newcoefs.append(x - coefs[1][i])  
-                i += 1     
+                newcoefs.append(x - coefs[1][i])
+                i += 1
             return Polynomial(newcoefs)
-                
-            
-
         elif isinstance(other, Number):
             return Polynomial((self.coefficients[0] - other,)
                               + self.coefficients[1:])
-
         else:
             return NotImplemented
-    
+
     def __mul__(self, other):
         if isinstance(other, Polynomial):
             selfcoefs = self.coefficients
             othercoefs = other.coefficients
             newcoefs = [0 for i in range(len(selfcoefs) + len(othercoefs))]
-            for i in range (len(selfcoefs)):
-                for j in range (len(othercoefs)):
-                    newcoefs[i + j] = newcoefs[i + j] + selfcoefs[i]*othercoefs[j]
+            for i in range(len(selfcoefs)):
+                for j in range(len(othercoefs)):
+                    newcoefs[i + j] = (newcoefs[i + j] +
+                                       selfcoefs[i]*othercoefs[j])
         if isinstance(other, Number):
             newcoefs = tuple(x*other for x in self.coefficients)
         return Polynomial(newcoefs)
@@ -119,14 +118,14 @@ class Polynomial:
 
     def __radd__(self, other):
         return self + other
-    
+
     def __rsub__(self, other):
         negativecoefs = tuple(-1*x for x in self.coefficients)
         return Polynomial(negativecoefs) + other
-    
+
     def __rmul__(self, other):
         return self * other
-    
+
     def __call__(self, other):
         total = 0
         i = 0
@@ -134,7 +133,7 @@ class Polynomial:
             total += x*(other**i)
             i += 1
         return total
-    
+
     def dx(self):
         i = 0
         newcoefs = []
@@ -142,10 +141,4 @@ class Polynomial:
             newcoefs.append(x*i)
             i += 1
         newcoefs.pop(0)
-        #print(newcoefs)
         return Polynomial(newcoefs)
-
-f = Polynomial((1,))
-print(f.dx())
-#g = Polynomial((1,1,1,1))
-#print(f.dx())
