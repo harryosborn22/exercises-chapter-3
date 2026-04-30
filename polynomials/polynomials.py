@@ -33,6 +33,7 @@ class Polynomial:
             coefs = [coefs]
         self.coefficients = tuple(coefs)
 
+    @property
     def degree(self):
         return len(self.coefficients) - 1
 
